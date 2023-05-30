@@ -1,92 +1,82 @@
-# cpp interview
+# Exyn's C++ Programming Interview
+Writing code on a white board is stressful and it doesn't accurately represent the work you'd be doing at Exyn. Instead of white board questions we'll ask you to solve the problem described below. 
 
+The exercise has two parts. First we'll ask you to solve it at home on either a Mac or Linux computer. We expect that solving this problem will take around an hour or two. When you are finished, generate a patch file and send it to us. Here are some of the things we'll be looking for in your solution:
 
+- Can you setup and use this workspace?
+- Can you create a reasonable solution to the problem? Does it work?
+- Did you add any unnecessary complexity?
+- Do you understand the data?
+- Is it well tested?
+- Do you use modern c++ features?
+- Did you maintain project hygiene, treating this like "real world" software that you and your team could maintain in perpetuity? 
 
-## Getting started
+After you submit your solution someone from Exyn will review it and your contact at Exyn will contact you to discuss the next steps.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Problem Description
+Included in this repository is a data set taken from the [City of Philadelphia's Open Data portal](https://opendataphilly.org/). It has parking violation data from the City of Philadelphia in CSV format.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+You are being asked to write a command line tool in C++ that transforms the individual tickets into a daily aggregate, with the count of tickets, high, low and average of the fine issued, in addition the data should be broken down by each zip code the ticket was issued in. 
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+For example, the the following tickets where issued on a single day in the 19127 zip code:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.exyn.io/incubator/cpp-interview.git
-git branch -M main
-git push -uf origin main
+anon_ticket_number,issue_datetime,state,anon_plate_id,division,location,violation_desc,fine,issuing_agency,lat,lon,gps,zip_code
+2017-11-11 07:08:00	PA	4729992		100 SALAIGNAC ST	PARKING PROHBITED	41	PPA	40.020192	-75.213368	true	19127
+2017-11-11 07:15:00	NJ	4729993		100 HERMIT ST	PARKING PROHBITED	41	PPA	40.021593	-75.212852	true	19127
+2017-11-11 08:16:00	PA	4729994		4700 MANSION ST	PARKING PROHBITED	41	PPA	40.032825	-75.229638	true	19127
+2017-11-11 10:03:00	PA	4729995		4300 MAIN ST	METER EXPIRED	26	PPA	40.025282	-75.223162	true	19127
+2017-11-11 10:07:00	OH	4729996		4400 MAIN ST	METER EXPIRED	26	PPA	40.0264	-75.225562	true	19127
+2017-11-11 10:09:00	PA	4729997		4400 MAIN ST	METER EXPIRED	26	PPA	40.026373	-75.225662	true	19127
+2017-11-11 10:23:00	PA	4729998		200 RIPKA ST	OVER TIME LIMIT	26	PPA	40.031058	-75.228207	true	19127
+2017-11-11 10:24:00	NY	4729999		200 RIPKA ST	OVER TIME LIMIT	26	PPA	40.031355	-75.227825	true	19127
 ```
 
-## Integrate with your tools
+Then the expected values for count of tickets, high, low and average for this day would be:
 
-- [ ] [Set up project integrations](https://gitlab.exyn.io/incubator/cpp-interview/-/settings/integrations)
+- count of tickets: 8.0
+- high: 41.0
+- low: 26.0
+- average: 31.6
 
-## Collaborate with your team
+### Output format
+The program should read the data from a file specified in the first argument and output the aggregated data to STDOUT in CSV format. The resulting CSV should follow this format:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```
+Zip Code,Date,Min Fine,Max Fine, Avg Fine, Count of Tickets
+19127, 2017-11-02, 41.0, 41.0, 41.0, 1.0 
+19127, 2017-11-11, 26.0, 41.0, 31.6, 8.0 
+...
+```
 
-## Test and Deploy
+### Some Considerations
 
-Use the built-in continuous integration in GitLab.
+- For this first part of the exercise, you can assume the input data will be consistent with the example
+- The output must be valid CSV, with the correct number of columns
+- The output must include a header, as specified above
+- The output must use the same date format as the input (i.e. MM/DD/YYYY)
+- The output must round numbers to 1 number after the decimal, appending trailing zeros to whole numbers. Examples include:
+ - - 30.3 -> 30.3
+ - - 73 -> 73.0
+ - - 12.34 -> 12.3
+- The sort order of the output data rows is not important
+- Ensure that the tests are passing (via make test) and the program runs (via make run) when you submit your solution
+- We're looking for a result that is correct, reasonably performant, and that other software engineers would be happy to maintain.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## Problem Environment
+This repository has a Makefile, prepared for a modern Linux environment. There is a requirement of GCC version 7 or higher existing on your host environment. The make file has different targets for running tests and executing the program. You will probably need to make some changes to the Makefile throughout the exercise. If you are not familiar with make you can find a getting started document [here](https://makefiletutorial.com/#getting-started).
 
-***
+To build the project run `make` in the root directory of this repository. 
 
-# Editing this README
+To run the tests run `make test`.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+To run the program with the sample data run `make run`.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Submitting Your Solution
+If you've applied to a job at Exyn and asked to submit your solution this is how:
 
-## Name
-Choose a self-explaining name for your project.
+### Run `make patch`
+When you've finished solving the problem and are happy with your work run `make patch` from the command line in the root of this project repository. This will generate a file named `exyn_interview_solution.patch`.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+### Submit Your Solution
+Once you've generated a patch file please submit it via the link you were provided with by your Exyn contact. Afterwards a software engineer from Exyn will look at your solution. If you run into problems, or have questions please feel free to reach out to your contact with questions.
