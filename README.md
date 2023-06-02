@@ -1,7 +1,7 @@
 # Exyn's C++ Programming Interview
 Writing code on a white board is stressful and it doesn't accurately represent the work you'd be doing at Exyn. Instead of white board questions we'll ask you to solve the problem described below. 
 
-The exercise has two parts. First we'll ask you to solve it at home on either a Mac or Linux computer. We expect that solving this problem will take around an hour or two. When you are finished, generate a patch file and send it to us. Here are some of the things we'll be looking for in your solution:
+The exercise has two parts. First we'll ask you to solve it at home in a Linux environment. We expect that solving this problem will take around an hour or two. When you are finished, generate a patch file and send it to us. Here are some of the things we'll be looking for in your solution:
 
 - Can you setup and use this workspace?
 - Can you create a reasonable solution to the problem? Does it work?
