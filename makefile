@@ -29,7 +29,7 @@ test:
 	$(BUILD_DIR)/$(TARGET_EXEC) test
 
 run: 
-	$(BUILD_DIR)/$(TARGET_EXEC) ../data/data.csv
+	$(BUILD_DIR)/$(TARGET_EXEC) data/data.csv
 
 patch:
 	git add .
