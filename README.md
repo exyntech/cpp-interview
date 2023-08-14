@@ -54,7 +54,7 @@ Zip Code,Date,Min Fine,Max Fine, Avg Fine, Count of Tickets
 - For this first part of the exercise, you can assume the input data will be consistent with the example
 - The output must be valid CSV, with the correct number of columns
 - The output must include a header, as specified above
-- The output must use the same date format as the input (i.e. YYYY-MM-DD)
+- The output must use the date format YYYY-MM-DD
 - The output must round numbers to 1 number after the decimal, appending trailing zeros to whole numbers. Examples include:
  - - 30.3 -> 30.3
  - - 73 -> 73.0
